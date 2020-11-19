@@ -1,8 +1,5 @@
-import math
-import random
+import argparse
 import pygame
-import tkinter as tk
-from tkinter import messagebox
 
 from block import block
 from graphics.drawing import message_box, redrawWindow
@@ -10,6 +7,13 @@ from snake import snake
 from util.random import randomItem
 
 def main():
+    # Parse the command line arguments
+    parser = argparse.ArgumentParser(description = "Decide the Artificial Intelligence technique")
+    parser.add_argument("gameMode", type=str)
+    args = parser.parse_args()
+    mode = args.gameMode
+    print(args.gameMode)
+
     global dimension, rows, s, item
     dimension = 500
     rows = 20
@@ -23,7 +27,7 @@ def main():
     while flag:
         pygame.time.delay(50)
         clock.tick(10)
-        s.move()
+        s.move(args.gameMode)
         if s.body[0].pos == item.pos:
             s.addCube()
             item = block(randomItem(rows, s), color=(255, 0, 0))
@@ -38,6 +42,5 @@ def main():
         redrawWindow(surface, rows, dimension, s, item)
 
     pass
-
 
 main()

@@ -1,6 +1,10 @@
 import pygame
 
 from block import block
+from hamilton import hamilton
+from human import human
+from longest_path import longest_path
+from shortest_path import shortest_path
 
 
 class snake(object):
@@ -13,53 +17,22 @@ class snake(object):
         self.body.append(self.head)
         self.directionX = 0
         self.directionY = 1
+        self.human = human()
+        self.shortest = shortest_path()
+        self.longest = longest_path()
+        self.hamilton = hamilton()
 
-    def move(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-            keys = pygame.key.get_pressed()
-
-            for key in keys:
-                if keys[pygame.K_LEFT]:
-                    self.directionX = -1
-                    self.directionY = 0
-                    self.turns[self.head.pos[:]] = [self.directionX, self.directionY]
-
-                elif keys[pygame.K_RIGHT]:
-                    self.directionX = 1
-                    self.directionY = 0
-                    self.turns[self.head.pos[:]] = [self.directionX, self.directionY]
-
-                elif keys[pygame.K_UP]:
-                    self.directionX = 0
-                    self.directionY = -1
-                    self.turns[self.head.pos[:]] = [self.directionX, self.directionY]
-
-                elif keys[pygame.K_DOWN]:
-                    self.directionX = 0
-                    self.directionY = 1
-                    self.turns[self.head.pos[:]] = [self.directionX, self.directionY]
-
-        for i, c in enumerate(self.body):
-            p = c.pos[:]
-            if p in self.turns:
-                turn = self.turns[p]
-                c.move(turn[0], turn[1])
-                if i == len(self.body) - 1:
-                    self.turns.pop(p)
-            else:
-                if c.directionX == -1 and c.pos[0] <= 0:
-                    c.pos = (c.rows - 1, c.pos[1])
-                elif c.directionX == 1 and c.pos[0] >= c.rows - 1:
-                    c.pos = (0, c.pos[1])
-                elif c.directionY == 1 and c.pos[1] >= c.rows - 1:
-                    c.pos = (c.pos[0], 0)
-                elif c.directionY == -1 and c.pos[1] <= 0:
-                    c.pos = (c.pos[0], c.rows - 1)
-                else:
-                    c.move(c.directionX, c.directionY)
+    def move(self, gameMode):
+        if gameMode == "human":
+            self.human.move(self)
+        elif gameMode == "breadth-first-search":
+            self.shortest.move(self)
+        elif gameMode == "depth-first-search":
+            self.longest.move(self)
+        elif gameMode == "hamilton":
+            self.longest.move(self)
+        else:
+            pass
 
     def reset(self, pos):
         self.head = block(pos)
