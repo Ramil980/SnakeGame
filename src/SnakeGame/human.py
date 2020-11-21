@@ -2,10 +2,10 @@ import pygame
 
 
 class human(object):
-    def __init__(snakef):
+    def __init__(self):
         pass
 
-    def move (snakef, snake):
+    def move (self, snake):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

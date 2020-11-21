@@ -27,10 +27,16 @@ def main():
     while flag:
         pygame.time.delay(50)
         clock.tick(10)
+        if len(s.body) == 1:
+            s.shortest.constructGraph(s.body)
+        break
         s.move(args.gameMode)
         if s.body[0].pos == item.pos:
             s.addCube()
             item = block(randomItem(rows, s), color=(255, 0, 0))
+            if args.gameMode == "breadth-first-search":
+                s.shortest.destroyGraph()
+                s.shortest.constructGraph(s.body)
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x + 1:])):
