@@ -10,15 +10,23 @@ class shortest_path(object):
         self.predecessor = defaultdict(list)
         self.distance = defaultdict(list)
         self.itemPosition = (0, 0)
+        self.path =[]
+
+    def configure(self, snake):
+        print(snake.head.pos, end=" ")
+        print(self.itemPosition, end="\n")
+        if self.checkConnectedness(snake.head.pos, self.itemPosition):
+            print("\n")
+            self.findShortestDistance(snake.head.pos, self.itemPosition)
+            for i in range(len(self.path) - 1, 0, -1):
+                snake.directionX = self.path[i - 1][0] - self.path[i][0]
+                snake.directionY = self.path[i - 1][1] - self.path[i][1]
+                print(snake.directionX, end=" ")
+                print(snake.directionY, end=" ")
+                print(self.path[i], end="\n")
+                snake.turns[self.path[i]] = [snake.directionX, snake.directionY]
 
     def move(self, snake):
-        #self.constructGraph(snake.body, self.itemPosition)
-        print (snake.head.pos, end = " ")
-        print (self.itemPosition, end = "\n\n\n")
-        if self.checkConnectedness(snake.head.pos, self.itemPosition):
-            pass
-        self.findShortestDistance(snake.head.pos, self.itemPosition)
-
         for i, c in enumerate(snake.body):
             p = c.pos[:]
             if p in snake.turns:
@@ -80,11 +88,16 @@ class shortest_path(object):
 
         for edge in self.edges:
             a, b = edge[0], edge[1]
-            self.graph[str(edge[0])].append(str(edge[1]))
+            self.graph[str(edge[0])].append(edge[1])
 
     # Destroys the graph and resets all parameters
     def destroyGraph(self):
-        pass
+        self.edges = []
+        self.graph = defaultdict(list)
+        self.predecessor = defaultdict(list)
+        self.distance = defaultdict(list)
+        self.itemPosition = (0, 0)
+        self.path = []
 
     # Check whether the given position contained in snake body or not
     def isInBody(self, snakeBody, position):
@@ -107,36 +120,30 @@ class shortest_path(object):
 
         visited[str(source)] = True
         self.distance[str(source)] = 0
-        queue.put(str(source))
+        queue.put(source)
         while not queue.empty():
             front = queue.get()
-            for i in self.graph[front]:
-                if visited[i] == False:
-                    visited[i] = True
-                    self.distance[i] = self.distance[front] + 1
-                    self.predecessor[i] = str(front)
+            for i in self.graph[str(front)]:
+                if visited[str(i)] == False:
+                    visited[str(i)] = True
+                    self.distance[str(i)] = self.distance[str(front)] + 1
+                    self.predecessor[str(i)] = front
                     queue.put(i)
                     if str(i) == str(destination):
                         return True
         return False
 
     def findShortestDistance(self, source, destination):
-        path = []
         dest = destination
-        print(dest)
-        path.append(str(dest))
+        self.path.append(dest)
         ct = 0
         while self.predecessor[str(dest)] != -1:
             ct += 1
-            path.append(self.predecessor[str(dest)])
+            self.path.append(self.predecessor[str(dest)])
             dest = self.predecessor[str(dest)]
 
-        for i in range(len(path) - 1, -1, -1):
-            print (path[i], end = " ")
-
-
-
-
-
+        for i in range(len(self.path) - 1, -1, -1):
+            print(self.path[i], end=" ")
+        print("\n")
 
 
