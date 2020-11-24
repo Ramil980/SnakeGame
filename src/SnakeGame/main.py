@@ -24,19 +24,19 @@ def main():
 
     clock = pygame.time.Clock()
 
+    if args.gameMode == "breadth-first-search":
+        s.shortest.constructGraph(s.body, item.pos)
+
     while flag:
         pygame.time.delay(50)
         clock.tick(10)
-        if len(s.body) == 1:
-            s.shortest.constructGraph(s.body)
-        break
         s.move(args.gameMode)
         if s.body[0].pos == item.pos:
             s.addCube()
             item = block(randomItem(rows, s), color=(255, 0, 0))
             if args.gameMode == "breadth-first-search":
                 s.shortest.destroyGraph()
-                s.shortest.constructGraph(s.body)
+                s.shortest.constructGraph(s.body, item.pos)
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x + 1:])):
@@ -44,6 +44,8 @@ def main():
                 message_box("You Lost!", "Play again")
                 s.reset((10, 10))
                 break
+
+        break
 
         redrawWindow(surface, rows, dimension, s, item)
 
