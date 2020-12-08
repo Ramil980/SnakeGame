@@ -1,7 +1,7 @@
 import pygame
 
 class block(object):
-    rows = 20
+    rows = 8
     w = 500
 
     def __init__(self, position, directionX=1, directionY=0, color=(255, 255, 255)):

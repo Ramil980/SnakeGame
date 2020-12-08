@@ -41,6 +41,10 @@ class snake(object):
         self.turns = {}
         self.directionX = 0
         self.directionY = 1
+        self.human = human()
+        self.shortest = shortest_path()
+        self.longest = longest_path()
+        self.hamilton = hamilton()
 
     def addCube(self):
         tail = self.body[-1]

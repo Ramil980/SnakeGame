@@ -4,7 +4,7 @@ from queue import Queue
 
 class shortest_path(object):
     def __init__(self):
-        self.rows = 20
+        self.rows = 8
         self.edges = []
         self.graph = defaultdict(list)
         self.predecessor = defaultdict(list)
@@ -54,32 +54,44 @@ class shortest_path(object):
                 if not self.isInBody(snakeBody, (i,j)):
                     if i == 0 and j == 0:
                         if (not self.isInBody(snakeBody, (i, j + 1))): self.edges.append([(i, j), (i, j+1)])
-                        if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i,j), (i+1, j)])
+                        if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i+1, j)])
+                        if (not self.isInBody(snakeBody, (self.rows - i - 1, j))): self.edges.append([(i, j), (self.rows - i - 1, j)])
+                        if (not self.isInBody(snakeBody, (i, self.rows - j - 1))): self.edges.append([(i, j), (i , self.rows - j - 1)])
                     elif i == 0 and j == (self.rows - 1):
                         if (not self.isInBody(snakeBody, (i,j - 1))): self.edges.append([(i, j), (i, j - 1)])
                         if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i + 1, j)])
+                        if (not self.isInBody(snakeBody, (i, j - self.rows + 1))): self.edges.append([(i, j), (i, j - self.rows + 1)])
+                        if (not self.isInBody(snakeBody, (self.rows - 1, self.rows - 1))): self.edges.append([(i, j), (self.rows - 1, self.rows - 1)])
                     elif i == 0:
                         if (not self.isInBody(snakeBody, (i,j - 1))): self.edges.append([(i, j), (i, j - 1)])
                         if (not self.isInBody(snakeBody, (i,j + 1))): self.edges.append([(i, j), (i, j + 1)])
                         if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i + 1, j)])
+                        if (not self.isInBody(snakeBody, (self.rows - 1, j))): self.edges.append([(i, j), (self.rows - 1, j)])
                     elif i == (self.rows - 1) and j == 0:
                         if (not self.isInBody(snakeBody, (i,j + 1))): self.edges.append([(i, j), (i, j + 1)])
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
+                        if (not self.isInBody(snakeBody, (i - self.rows + 1, j))): self.edges.append([(i, j), (i - self.rows + 1, j)])
+                        if (not self.isInBody(snakeBody, (i, self.rows - 1))): self.edges.append([(i, j), (i, self.rows - 1)])
                     elif i == (self.rows - 1) and j == (self.rows - 1):
                         if (not self.isInBody(snakeBody, (i, j - 1))): self.edges.append([(i, j), (i, j - 1)])
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
+                        if (not self.isInBody(snakeBody, (0, j))): self.edges.append([(i, j), (0, j)])
+                        if (not self.isInBody(snakeBody, (i, 0))): self.edges.append([(i, j), (i, 0)])
                     elif i == (self.rows - 1):
                         if (not self.isInBody(snakeBody, (i, j - 1))): self.edges.append([(i, j), (i, j - 1)])
                         if (not self.isInBody(snakeBody, (i, j + 1))): self.edges.append([(i, j), (i, j + 1)])
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
+                        if (not self.isInBody(snakeBody, (0, j))): self.edges.append([(i, j), (0, j)])
                     elif j == 0:
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
                         if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i + 1, j)])
                         if (not self.isInBody(snakeBody, (i, j + 1))): self.edges.append([(i, j), (i, j + 1)])
+                        if (not self.isInBody(snakeBody, (i, self.rows - 1))): self.edges.append([(i, j), (i, self.rows - 1)])
                     elif j == (self.rows - 1):
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
                         if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i + 1, j)])
                         if (not self.isInBody(snakeBody, (i, j - 1))): self.edges.append([(i, j), (i, j - 1)])
+                        if (not self.isInBody(snakeBody, (i, 0))): self.edges.append([(i, j), (i, 0)])
                     else:
                         if (not self.isInBody(snakeBody, (i - 1, j))): self.edges.append([(i, j), (i - 1, j)])
                         if (not self.isInBody(snakeBody, (i + 1, j))): self.edges.append([(i, j), (i + 1, j)])

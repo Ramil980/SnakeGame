@@ -16,9 +16,9 @@ def main():
 
     global dimension, rows, s, item
     dimension = 500
-    rows = 20
+    rows = 8
     surface = pygame.display.set_mode((dimension, dimension))
-    s = snake((60, 0, 255), (1, 15))
+    s = snake((60, 0, 255), (3, 3))
     item = block(randomItem(rows, s), color=(255, 0, 0))
     flag = True
 
@@ -27,6 +27,9 @@ def main():
     if args.gameMode == "breadth-first-search":
         s.shortest.constructGraph(s.body, item.pos)
         s.shortest.configure(s)
+    elif args.gameMode == "hamilton":
+        s.longest.constructGraph(s.body, item.pos)
+        s.longest.configure(s)
 
     while flag:
         pygame.time.delay(50)
@@ -39,12 +42,22 @@ def main():
                 s.shortest.destroyGraph()
                 s.shortest.constructGraph(s.body, item.pos)
                 s.shortest.configure(s)
+            elif args.gameMode == "hamilton":
+                s.longest.destroyGraph()
+                s.longest.constructGraph(s.body, item.pos)
+                s.longest.configure(s)
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x + 1:])):
                 print("Score: ", len(s.body))
                 message_box("You Lost!", "Play again")
-                s.reset((10, 10))
+                s.reset((4, 4))
+                if args.gameMode == "breadth-first-search":
+                    s.shortest.constructGraph(s.body, item.pos)
+                    s.shortest.configure(s)
+                elif args.gameMode == "hamilton":
+                    s.longest.constructGraph(s.body, item.pos)
+                    s.longest.configure(s)
                 break
 
         #break
